@@ -193,6 +193,7 @@ int readLine(int lineNum, struct Globals *global) {
                     global->stringLength = (int)strlen(line);
                 }
                 strncpy(global->line1, line, global->stringLength);
+                global->line1[global->stringLength] = '\0';
                 printf("%s\nlength %d\n", global->line1, global->stringLength); //print value for debugging
                 break;
             } else {
