@@ -411,25 +411,23 @@ int play(struct Globals *global) {
     char alphabet[] = "abcdefghijklmnopqrstuvwxy";
     int xPosForGuesses = 90;
     char guessedWord[15] = {'\0'};
+    int isPrinted[15] = {0};
     do {
         gfx_color(0, 0, 0);
 
-        // TODO: change this to something nicer
-        if (strncmp(global->line1, guessedWord, strlen(global->line1)) == 0) {
-            gfx_text("CONGRATULATIONS!", 0, 0, 2);
-            gfx_wait();
-            break;
-        }
-
         int startXPos = 400;
+        char res[2] = {0, 0};
         for (int j = 0; j < strlen(global->line1); j++) {
-            startXPos += 15;
+            startXPos += 20;
             if (guessedWord[j] == '\0') {
                 gfx_text("_", startXPos, 400, 2);
-            } else {
-                gfx_text(&guessedWord[j], startXPos, 400, 2);
+            } else if (isPrinted[j] == 0) {
+                res[0] = guessedWord[j];
+                gfx_text(res, startXPos, 400, 2);
+                isPrinted[j] = 1;
             }
         }
+
         for (i = 0; i < 5; i++) {
             for (j = 0; j < 5; j++) {
                 gfx_rectangle(50 + (i * 50), 150 + (j * 50), 50, 50);
@@ -452,6 +450,13 @@ int play(struct Globals *global) {
         gfx_text("z", 170, 415, 1);
 
         gfx_flush();
+
+        // TODO: change this to something nicer
+        if (strncmp(global->line1, guessedWord, strlen(global->line1)) == 0) {
+            gfx_text("CONGRATULATIONS!", 0, 0, 2);
+            gfx_wait();
+            break;
+        }
 
         buttonPressed = 0;
         c = gfx_wait();
